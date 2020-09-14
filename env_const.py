@@ -57,4 +57,7 @@ class Env:
 
 env = Env()
 
-print(env.get_all_states())
+# print(env.get_all_states())
+# print(env.state_after_action([0,0],3))
+# print(env.get_reward([0,0],3))
+print()
