@@ -21,15 +21,18 @@ class PolicyIteration:
         # 다음 가치함수 초기화
         next_value_table = [[0.00] * self.env.width
                             for _ in range(self.env.height)]
-
+        # print(next_value_table)
         # 모든 상태에 대해서 벨만 기대방정식을 계산
-        for state in self.env.get_all_states():
+        # print(self.env.get_all_states())
+        for i, state in enumerate(self.env.get_all_states()):
             value = 0.0
             # 마침 상태의 가치 함수 = 0
             if state == [2, 2]:
                 next_value_table[state[0]][state[1]] = value
                 continue
 
+            print(i, '번째의 ', 'state는', state, '이고 갱신된 가치는', next_value_table)
+            # print(self.env.possible_actions)
             # 벨만 기대 방정식
             for action in self.env.possible_actions:
                 next_state = self.env.state_after_action(state, action)
@@ -40,6 +43,7 @@ class PolicyIteration:
 
             next_value_table[state[0]][state[1]] = value
 
+        # print(next_value_table)
         self.value_table = next_value_table
         return self.value_table
 
@@ -91,23 +95,20 @@ class PolicyIteration:
 
 env = Env()
 policy_iteration = PolicyIteration(env)
-# policy_iteration.policy_evaluation()
-#grid_world = GraphicDisplay(policy_iteration)
-#grid_world.mainloop()
-
-#print (policy_iteration.policy_evaluation() )
+# print (policy_iteration.policy_evaluation() )
 aaa = policy_iteration.policy_evaluation()
 a = []
-for  i  in aaa:
-    print(i)
+for i in aaa:
+    # print(i)
     a.append(i)
 b = np.array(a)
 print(b.T)
 
+# print( policy_iteration.get_policy([0,0]))
+# print( policy_iteration.get_policy([0,0])[3] )
 
-#print (policy_iteration.policy_evaluation() )
+# print (policy_iteration.policy_evaluation() )
 
 
-#policy_iteration.policy_improvement()
-#print (policy_iteration.policy_evaluation() )
-
+# policy_iteration.policy_improvement()
+# print (policy_iteration.policy_evaluation() )
