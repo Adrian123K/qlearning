@@ -41,6 +41,7 @@ class PolicyIteration:
             next_value_table[state[0]][state[1]] = value
 
         self.value_table = next_value_table
+        print(self.value_table)
 
     # 현재 가치 함수에 대해서 탐욕 정책 발전
     def policy_improvement(self):
