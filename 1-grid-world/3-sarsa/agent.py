@@ -21,6 +21,7 @@ class SARSAgent:
         td = reward + self.discount_factor * next_state_q - current_q
         new_q = current_q + self.step_size * td
         self.q_table[state][action] = new_q
+        # print(self.q_table)
 
     # 입실론 탐욕 정책에 따라서 행동을 반환
     def get_action(self, state):
@@ -46,27 +47,39 @@ if __name__ == "__main__":
     env = Env()
     agent = SARSAgent(actions=list(range(env.n_actions)))
 
-    for episode in range(1000):
-        # 게임 환경과 상태를 초기화
+    cnt_s = 0
+    cnt_f = 0
+
+    loop = 1000
+
+    for episode in range(loop):
         state = env.reset()
-        # 현재 상태에 대한 행동을 선택
         action = agent.get_action(state)
 
         while True:
             env.render()
-
-            # 행동을 위한 후 다음상태 보상 에피소드의 종료 여부를 받아옴
             next_state, reward, done = env.step(action)
-            # 다음 상태에서의 다음 행동 선택
             next_action = agent.get_action(next_state)
-            # <s,a,r,s',a'>로 큐함수를 업데이트
             agent.learn(state, action, reward, next_state, next_action)
 
             state = next_state
             action = next_action
 
-            # 모든 큐함수를 화면에 표시
             env.print_value_all(agent.q_table)
 
             if done:
+                if reward == 100:
+                    cnt_s += 1
+                if reward == -100:
+                    cnt_f += 1
+
+                print(f"epsilon: {agent.epsilon} | 에피소드: {episode+1} | 성공횟수: {cnt_s} | 실패횟수: {cnt_f}")
                 break
+
+        if cnt_s != 0 and not cnt_s % 10:
+            agent.epsilon = agent.epsilon - (agent.epsilon / loop)
+            if agent.epsilon < 0:
+                agent.epsilon = 1e-08
+            # print(episode, agent.epsilon)
+
+
