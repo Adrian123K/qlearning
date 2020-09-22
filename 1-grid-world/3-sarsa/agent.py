@@ -28,6 +28,7 @@ class SARSAgent:
         if np.random.rand() < self.epsilon:
             # 무작위 행동 반환
             action = np.random.choice(self.actions)
+            self.epsilon -= 0.001
         else:
             # 큐함수에 따른 행동 반환
             state = str(state)
@@ -76,10 +77,10 @@ if __name__ == "__main__":
                 print(f"epsilon: {agent.epsilon} | 에피소드: {episode+1} | 성공횟수: {cnt_s} | 실패횟수: {cnt_f}")
                 break
 
-        if cnt_s != 0 and not cnt_s % 10:
-            agent.epsilon = agent.epsilon - (agent.epsilon / loop)
-            if agent.epsilon < 0:
-                agent.epsilon = 1e-08
+        # if cnt_s != 0 and not cnt_s % 10:
+        #     agent.epsilon = agent.epsilon - (agent.epsilon / loop)
+        #     if agent.epsilon < 0:
+        #         agent.epsilon = 1e-08
             # print(episode, agent.epsilon)
 
 

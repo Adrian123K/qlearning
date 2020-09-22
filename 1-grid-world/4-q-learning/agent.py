@@ -44,6 +44,8 @@ if __name__ == "__main__":
     env = Env()
     agent = QLearningAgent(actions=list(range(env.n_actions)))
 
+    cnt_s = 0
+    cnt_f = 0
     for episode in range(1000):
         state = env.reset()
 
@@ -63,4 +65,15 @@ if __name__ == "__main__":
             env.print_value_all(agent.q_table)
 
             if done:
+                if reward == 100:
+                    cnt_s += 1
+                elif reward == -100:
+                    cnt_f += 1
+
+                if cnt_s != 0 and not cnt_s % 10:
+                    agent.epsilon -= 0.01
+                    if agent.epsilon < 0:
+                        agent.epsilon = 1e-08
+                print(f"epsilon : {agent.epsilon} | 성공횟수 : {cnt_s} | 실패횟수 : {cnt_f}")
+
                 break
